@@ -20,6 +20,7 @@
     "loglevel": "^1.6.1",
     "loglevel-plugin-prefix": "^0.8.4",
     "primus": "^7.3.2",
+    "sat": "^0.7.1",
     "scene-graph": "^1.4.0",
     "ws": "^6.2.0"
   }

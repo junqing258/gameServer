@@ -20,15 +20,12 @@ exports.app = function(app_server) {
     // primus.library();
     // primus.save(__dirname +'/primus.js');
     server.listen(3000, () => {
-        console.log(chalk.green('primus启动端口: 3000\n'));
+        console.log(chalk.green('primus启动端口: 3000\n')); 
     });
-    primus.on('open', data => log.info(chalk.green('连接成功', data)));
 
     primus.on('connection', spark => {
         spark.write(JSON.stringify({ "cmd": "conn::init" }));
         this.controller = new Controller(spark);
     });
-
-    let syncData, battleData, heroData;
 
 }

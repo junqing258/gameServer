@@ -2,7 +2,7 @@
 const Game = require('./app/game');
 const Role = require('./entity/role');
 
-class Starter {
+module.exports = class Starter {
 
     constructor() {
         this.game = new Game();
@@ -20,5 +20,3 @@ class Starter {
 
 }
 
-
-module.exports = Starter;

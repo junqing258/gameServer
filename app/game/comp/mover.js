@@ -1,6 +1,6 @@
 
 
-class Mover {
+module.exports = class Mover {
 
     constructor() {
         this.x = 0;
@@ -26,5 +26,4 @@ class Mover {
     }
 
 }
-
-module.exports = Mover;
+ 

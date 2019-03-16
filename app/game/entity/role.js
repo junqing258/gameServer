@@ -2,7 +2,7 @@
 const Mover = require('./../comp/mover');
 
 
-class Role {
+module.exports = class Role {
 
     constructor() {
         this.comps = [];
@@ -16,5 +16,3 @@ class Role {
     }
 
 }
-
-module.exports = Role;

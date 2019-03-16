@@ -3,7 +3,7 @@ const Mover = require('./../comp/mover');
 
 const COMPS = [Mover];
 
-class BattleSystem {
+module.exports = class BattleSystem {
 
     constructor() {
         this._enabled = true;
@@ -58,5 +58,3 @@ class BattleSystem {
     }
 
 }
-
-module.exports = BattleSystem;
