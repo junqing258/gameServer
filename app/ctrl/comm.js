@@ -3,7 +3,7 @@ const EventEmitter = require('events');
 
 class CommCtrl {
 
-    constructor(spark, parmas) {
+    constructor(spark, params) {
         this.spark = spark;
         this.actions = {};
         this.init();
@@ -13,18 +13,18 @@ class CommCtrl {
         this.spark.on('data', data => {
             data = data.toString();
             console.log(data);
-            let { cmd, parmas } = data;
+            let { cmd, params } = data;
             let action;
             if (action = this.actions[cmd]) {
-                action(parmas);
+                action(params);
             } else {
-                // this.handleAction(parmas);
+                // this.handleAction(params);
             }
         });
     }
 
-    handleAction(parmas) {
-        console.log('handle action:', parmas);
+    handleAction(params) {
+        console.log('handle action:', params);
     }
 
     reigester(actions) {

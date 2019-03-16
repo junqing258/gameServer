@@ -1,5 +1,5 @@
 
-const Starter = require('../game/starter');
+const Runner = require('../game/runner');
 
 class GameCtrl {
 
@@ -7,7 +7,7 @@ class GameCtrl {
         this.spark = spark;
 
         this.actions = {
-            'start': this.start.bind(this)
+            'start': this.start.bind(this),
         };
         this.init();
     }
@@ -16,34 +16,24 @@ class GameCtrl {
         this.spark.on('data', data => {
             data = JSON.parse(data.toString());
             console.log(data.cmd);
-            let { cmd, parmas } = data;
+            let { cmd, params } = data;
             let action;
             if (action = this.actions[cmd]) {
-                action(parmas);
+                action(params);
             } else {
-                // this.handleAction(parmas);
+                this.handleAction(cmd, params);
             }
         });
     }
 
-    handleAction() {
-        this.spark.on('data', data => {
-            data = data.toString();
-            console.log(data);
-            let { cmd, parmas } = data;
-            let action;
-            if (action = this.actions[cmd]) {
-                action(parmas);
-            } else {
-                // this.handleAction(parmas);
-            }
-        });
+    handleAction(cmd, params) {
+        this.app && this.app.emitter.emit(cmd, params);
     }
-
 
     start() {
         console.log('====================> new game');
-        this.startGame = new Starter();
+        this.runner = new Runner(this.spark);
+        this.app = this.runner.app;
     }
 
 }

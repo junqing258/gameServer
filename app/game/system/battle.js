@@ -5,11 +5,13 @@ const COMPS = [Mover];
 
 module.exports = class BattleSystem {
 
-    constructor() {
+    constructor(app) {
         this._enabled = true;
 
         this._id = '';
         this._componentCls = {};
+
+        this.app = app;
 
         for (let compCls of COMPS) {
             this._componentCls[compCls.name] = [];

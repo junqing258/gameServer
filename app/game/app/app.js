@@ -1,17 +1,22 @@
 
+const EventEmitter = require('events');
 const BattleSystem = require('../system/battle');
 
 const INTERVER = 50;
 const poolSize = 10;
 
-class Game {
+module.exports = class Game {
 
-    constructor() {
-        this.system = new BattleSystem();
+    constructor(spark) {
+        this.spark = spark;
+        this.system = new BattleSystem(this);
+        this.emitter = new EventEmitter();
 
         this._deadComponents = [];
         this._newEntities = [];
         this._deadEntities = [];
+
+        this.entities = [];
     }
 
     start() {
@@ -19,13 +24,13 @@ class Game {
     }
 
     addEntity(ent) {
-        ent.system = this;
+        ent.app = this;
         this._newEntities.push(ent);
         return ent;
     }
 
     deadEntity(ent) {
-        ent.system = null;
+        ent.app = null;
         this._deadEntities.push(ent);
         return ent;
     }
@@ -59,36 +64,63 @@ class Game {
                 comp.onDestroy();
             }
 
+            comp.app = null;
             comp.system = null;
             comp.entity = null;
         }
 
-
         this._deadComponents = [];
         this._newEntities = [];
         this._deadEntities = [];
+
+        this.postSync();
+    }
+
+    postSync() {
+        let data = {};
+        for (let i = 0; i < this.entities.length; ++i) {
+            if (true/* isRole */) {
+                let role = this.entities[i];
+                let { x, y } = role;
+                data[role.uid] = { x, y };
+            }
+        }
+        this.spark.write(JSON.stringify(data));
     }
 
     _initEntity(ent) {
         for (let i = 0; i < ent.comps.length; ++i) {
             let comp = ent.comps[i];
+            comp.app = this;
+            comp.system = this.system;
+            comp.entity = ent;
             if (comp.onInit) {
                 comp.onInit();
             }
             this.system.add(comp);
+
+            this.entities.push(ent);
         }
     }
 
     _deadEntity(ent) {
-        for (let i = 0; i < ent._comps.length; ++i) {
+        for (let i = 0; i < ent.comps.length; ++i) {
             let comp = ent.comps[i];
             if (comp.onDestroy) {
                 comp.onDestroy();
             }
+            comp.app = null;
+            comp.system = null;
+            comp.entity = null;
             this.system.remove(comp);
+        }
+
+        for (let i = 0; i < this.entities.length; ++i) {
+            if (ent === this.entities[i]) {
+                this.entities.splice(i);
+                break;
+            }
         }
     }
 
 }
-
-module.exports = Game;
