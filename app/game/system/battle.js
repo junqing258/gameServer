@@ -40,7 +40,7 @@ module.exports = class BattleSystem {
                 for (let i = 0; i < _components.length; ++i) {
                     let component = _components[i];
                     if (component === comp) {
-                        _components.slice(i);
+                        _components.splice(i,1);
                         break;
                     }
                 }
